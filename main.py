@@ -1,56 +1,35 @@
-import random
+import random 
 
-def roll():
-    Min_value = 1 
-    Max_value= 6 
-    roll = random.randint(Min_value , Max_value)
+def random_ipgenerator():
+    random_num = random.randint(0,20)
+    return [f"192.168.1.{random_num}", random_num] # 192.168.1.7
 
-    return roll 
-
-while True:
-    Players = input("Enter the number of player you want 2 - 4: " )
-    if Players.isdigit():
-        Players = int(Players)
-        if 2 <= Players <=4:
-            break
-        else:
-            print("enter the number between 2 - 4: ")
-    else :
-        print("enter a valid number")
-
-Max_scores = 50
-Players_score = [0 for i in range(Players)]
-
-while max(Players_score) < Max_scores:
-    for i in range(Players):
-        print("\n Player" , i + 1 ,"turn has just started \n")
-        Current_score = 0 
-        while True:
-            Should_roll = input("do you want to roll ? ")
-            if Should_roll.lower() != "y" :
-                break 
-            
-            Value = roll()
-            
-
-            if Value == 1 :
-                print("you rolled" , Value )
-                print("your turn is done")
-                break
-            else :
-                Current_score += Value
-                print("you rolled a : ", Value )
-            
-            print("your current score is : " , Current_score)
-        Players_score[i] += Current_score
-        print("your current score is ; ",Players_score[i])
-        break
-
-Max_scores = max(Players_score)
-winning_idx =  Players_score.index(Max_scores)
-print("Player number" ,winning_idx +1 , "is the winner with a score of : " ,Max_scores)
+def check_firewall_rules(ip , rules):
+    for rule_ip , action in rules:
+        if ip[0] == rule_ip:
+            return action
+    return "ALLOW"
 
 
-    
+def main():
+    firewall_rules = {
+        "192.168.1.1" : "block",
+        "192.168.1.4":  "block",
+        "192.168.1.9" : "block",
+        "192.168.1.20": "block",
+        "192.168.1.16" : "block",
+        "192.168.1.5" : "block"
+    }
+
+
+    for i in range(10):
+        ip = random_ipgenerator()
+        action = check_firewall_rules(ip , firewall_rules.items())
+        print(f"IP Address : {ip[0]} - Action : {action} , Random - {ip[1]}")
+
+
+if __name__ == "__main__":
+    main()
+
 
 
